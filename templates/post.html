@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary -->
+    <title>{{ og_title }} - Avex Maria</title>
+    <meta name="description" content="{{ og_description }}">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type"        content="article">
+    <meta property="og:site_name"   content="AVEX Alumni Network">
+    <meta property="og:title"       content="{{ og_title }}">
+    <meta property="og:description" content="{{ og_description }}">
+    <meta property="og:image"       content="{{ og_image }}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url"         content="{{ og_url }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ og_title }}">
+    <meta name="twitter:description" content="{{ og_description }}">
+    <meta name="twitter:image"       content="{{ og_image }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .header-actions { display: flex; gap: 0.75rem; }
+        .btn-join {
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-login  { background: rgba(255,255,255,0.15); color: white; }
+        .btn-signup { background: #ffd700; color: #1e3c72; }
+        .btn-login:hover  { background: rgba(255,255,255,0.25); }
+        .btn-signup:hover { background: #f0c800; }
+
+        .page-wrap {
+            max-width: 620px;
+            margin: 2rem auto;
+            padding: 0 1rem 3rem;
+        }
+
+        /* Post card */
+        .post-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            overflow: hidden;
+        }
+        .post-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 1rem 0.5rem;
+        }
+        .post-avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 0.9rem;
+            flex-shrink: 0;
+            background-size: cover; background-position: center;
+        }
+        .post-author-name {
+            font-weight: 700; color: #1e3c72; font-size: 0.95rem;
+        }
+        .post-author-title { color: #666; font-size: 0.78rem; margin: 0.1rem 0; }
+        .post-time { color: #999; font-size: 0.73rem; }
+        .post-body { padding: 0.5rem 1rem 0.75rem; }
+        .post-text {
+            color: #333; font-size: 0.92rem; line-height: 1.6;
+            white-space: pre-wrap; word-break: break-word;
+            margin-bottom: 0.6rem;
+        }
+        .post-text.clamped {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .post-text-wrap { position: relative; margin-bottom: 0.6rem; }
+        .see-more-btn {
+            background: none;
+            border: none;
+            color: #1a73e8;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            display: inline;
+        }
+        .see-more-btn:hover { text-decoration: underline; }
+        .post-image {
+            width: 100%; max-height: 420px;
+            object-fit: cover; display: block;
+        }
+        .post-video {
+            width: 100%; max-height: 420px; display: block;
+        }
+        .post-stats {
+            display: flex; justify-content: space-between;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #888; font-size: 0.8rem;
+        }
+        .post-actions {
+            display: flex; padding: 0.3rem 0.5rem;
+        }
+        .action-btn {
+            flex: 1; padding: 0.55rem 0.3rem;
+            background: none; border: none; color: #666;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; gap: 0.35rem;
+            border-radius: 4px; font-size: 0.83rem; font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .action-btn:hover { background: #f0f2f5; color: #1e3c72; }
+
+        /* CTA banner */
+        .cta-banner {
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .cta-banner h3 { color: #1e3c72; margin-bottom: 0.4rem; font-size: 1.05rem; }
+        .cta-banner p  { color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
+        .cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .cta-btn {
+            padding: 0.65rem 1.5rem; border-radius: 20px;
+            border: none; cursor: pointer; font-weight: 600;
+            font-size: 0.88rem; text-decoration: none;
+            display: inline-block;
+        }
+        .cta-primary   { background: #1e3c72; color: white; }
+        .cta-secondary { background: #f0f2f5; color: #1e3c72; }
+        .cta-primary:hover   { background: #2a5298; }
+        .cta-secondary:hover { background: #e4e6eb; }
+
+        /* Loading / error */
+        .state-box {
+            text-align: center; padding: 3rem 1rem; color: #888;
+        }
+        .state-box i { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+        .state-box p { font-size: 0.95rem; }
+
+        /* Share toast */
+        .toast {
+            position: fixed; bottom: 1.5rem; left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1e3c72; color: white;
+            padding: 0.65rem 1.4rem; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            transition: transform 0.3s; z-index: 999;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 480px) {
+            .page-wrap { margin: 1rem auto; }
+            .action-btn { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/" class="logo"><i class="fas fa-graduation-cap"></i> AVEX</a>
+    <div class="header-actions">
+        <a href="/login"  class="btn-join btn-login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+        <a href="/signup" class="btn-join btn-signup"><i class="fas fa-user-plus"></i> Join</a>
+    </div>
+</header>
+
+<div class="page-wrap">
+    <div id="postContainer">
+        <div class="state-box">
+            <i class="fas fa-spinner fa-spin" style="color:#1e3c72;"></i>
+            <p>Loading post...</p>
+        </div>
+    </div>
+
+    <div class="cta-banner">
+        <h3><i class="fas fa-graduation-cap" style="color:#1e3c72;"></i> Join Avex Maria Alumni Network</h3>
+        <p>Connect with thousands of alumni, share your journey, and stay updated.</p>
+        <div class="cta-btns">
+            <a href="/signup" class="cta-btn cta-primary"><i class="fas fa-user-plus"></i> Create account</a>
+            <a href="/login"  class="cta-btn cta-secondary"><i class="fas fa-sign-in-alt"></i> Log in</a>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script>
+    const API_BASE = '/api';
+
+    function getPostId() {
+        // Works for both /post/4/ (Django) and ?id=4 (fallback)
+        const pathMatch = window.location.pathname.match(/\/post\/(\d+)/);
+        if (pathMatch) return pathMatch[1];
+        return new URLSearchParams(window.location.search).get('id');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function formatTime(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function shareThis() {
+        const url = window.location.href;
+        if (navigator.share) {
+            navigator.share({ title: 'Check out this post on AVEX', url });
+        } else {
+            navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard!'));
+        }
+    }
+
+    function toggleText() {
+        const p   = document.getElementById('ptxt');
+        const btn = document.getElementById('seemore');
+        const expanded = !p.classList.contains('clamped');
+        p.classList.toggle('clamped', expanded);
+        btn.textContent = expanded ? 'more' : 'less';
+    }
+
+    function checkSeeMore() {
+        const p   = document.getElementById('ptxt');
+        const btn = document.getElementById('seemore');
+        if (!p || !btn) return;
+        p.classList.add('clamped');
+        btn.style.display = p.scrollHeight > p.clientHeight ? 'inline' : 'none';
+    }
+
+    async function loadPost() {
+        const postId = getPostId();
+        const container = document.getElementById('postContainer');
+
+        if (!postId) {
+            container.innerHTML = `<div class="state-box"><i class="fas fa-exclamation-circle" style="color:#c0392b;"></i><p>No post specified.</p></div>`;
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/posts/${postId}/public/`);
+
+            if (!response.ok) {
+                container.innerHTML = `<div class="state-box"><i class="fas fa-lock" style="color:#888;"></i><p>This post is not available or has been removed.</p></div>`;
+                return;
+            }
+
+            const post = await response.json();
+            renderPost(post, container);
+            setTimeout(checkSeeMore, 50);
+
+            // Update page title & meta
+            document.title = `${post.author?.username || 'Post'} on AVEX`;
+
+        } catch (err) {
+            container.innerHTML = `<div class="state-box"><i class="fas fa-wifi" style="color:#888;"></i><p>Could not load post. Check your connection.</p></div>`;
+        }
+    }
+
+    function goToProfile(userId) {
+        if (!userId) return;
+        window.location.href = `/profile?user_id=${userId}`;
+    }
+
+    function renderPost(post, container) {
+        const author   = post.author?.username || 'Unknown';
+        const title    = post.author?.title    || '';
+        const authorId = post.author?.id || null;
+        const avatar   = post.author?.avatar_url;
+        const initials = author.substring(0, 2).toUpperCase();
+        const avatarStyle = avatar
+            ? `background-image:url('${avatar}');background-size:cover;background-position:center;`
+            : '';
+
+        const images = Array.isArray(post.images) && post.images.length
+            ? post.images
+            : (post.image ? [post.image] : []);
+
+        const imagesHtml = images.map(src =>
+            `<img src="${src}" alt="Post image" class="post-image">`
+        ).join('');
+
+        const videoHtml = post.video
+            ? `<video src="${post.video}" autoplay muted loop playsinline controls class="post-video"></video>`
+            : '';
+
+        container.innerHTML = `
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" style="${avatarStyle}; cursor:pointer;" onclick="goToProfile(${authorId})">${avatarStyle ? '' : initials}</div>
+                    <div style="cursor:pointer;" onclick="goToProfile(${authorId})">
+                        <div class="post-author-name">${author}</div>
+                        ${title ? `<div class="post-author-title">${title}</div>` : ''}
+                        <div class="post-time">${formatTime(post.created_at)}</div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    ${post.content ? `
+                    <div class="post-text-wrap" id="ptw">
+                        <p class="post-text clamped" id="ptxt">${post.content}</p>
+                        <button class="see-more-btn" id="seemore" onclick="toggleText()">more</button>
+                    </div>` : ''}
+                    ${imagesHtml}
+                    ${videoHtml}
+                </div>
+                <div class="post-stats">
+                    <span><i class="fas fa-thumbs-up"></i> ${post.likes_count || 0} likes</span>
+                    <span>${(post.comments_count || post.comments?.length || 0)} comments &bull; ${post.reposts_count || 0} reposts</span>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn" onclick="window.location.href='/login'">
+                        <i class="fas fa-thumbs-up"></i> Like
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='/login'">
+                        <i class="fas fa-comment"></i> Comment
+                    </button>
+                    <button class="action-btn" onclick="shareThis()">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    loadPost();
+</script>
+
+</body>
+</html>
