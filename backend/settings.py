@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-qy2ij@7c08ydqya2+2%vhq882^%vfg281szykl!jei2qqt(a8e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "avex-production-10c1.up.railway.app",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
