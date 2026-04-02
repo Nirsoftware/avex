@@ -1,6 +1,1 @@
-Django
-gunicorn
-psycopg2-binary
-djangorestframework
-channels
-daphne
+web: python manage.py migrate && gunicorn backend.wsgi --bind 0.0.0.0:$PORT
