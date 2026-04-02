@@ -96,28 +96,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("PGDATABASE") or os.environ.get("POSTGRES_DB"),
-        'USER': os.environ.get("PGUSER") or os.environ.get("POSTGRES_USER"),
-        'PASSWORD': os.environ.get("PGPASSWORD") or os.environ.get("POSTGRES_PASSWORD"),
-        'HOST': os.environ.get("PGHOST"),
-        'PORT': os.environ.get("PGPORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Replace Postgres with explicit env var Database URL in production (set env vars in Railway)
-if os.environ.get('DATABASE_URL'):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'], conn_max_age=600)
-elif os.environ.get('SUPABASE_DB_URL') and os.environ.get('SUPABASE_DB_PASS'):
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('SUPABASE_DB_NAME', 'postgres'),
-        'USER': os.environ.get('SUPABASE_DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('SUPABASE_DB_PASS'),
-        'HOST': os.environ.get('SUPABASE_DB_HOST'),
-        'PORT': os.environ.get('SUPABASE_DB_PORT', '5432'),
-    }
+# For production, you can remove the temporary SQLite block and use an env-based Postgres URL:
+# if os.environ.get('DATABASE_URL'):
+#     import dj_database_url
+#     DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'], conn_max_age=600)
 
 
 # Password validation

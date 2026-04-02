@@ -1,1 +1,6 @@
-web: gunicorn backend.wsgi
+Django
+gunicorn
+psycopg2-binary
+djangorestframework
+channels
+daphne
