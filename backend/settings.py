@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,10 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "avex-production-10c1.up.railway.app",
+    "nirsoftware.github.io",
     "localhost",
     "127.0.0.1",
 ]
-
 
 # Application definition
 
@@ -100,6 +101,20 @@ DATABASES = {
     }
 }
 
+# Replace SQLite with Supabase / Postgres in production (set env vars in Railway)
+if os.environ.get('DATABASE_URL'):
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'], conn_max_age=600)
+elif os.environ.get('SUPABASE_DB_URL') and os.environ.get('SUPABASE_DB_PASS'):
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('SUPABASE_DB_NAME', 'postgres'),
+        'USER': os.environ.get('SUPABASE_DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('SUPABASE_DB_PASS'),
+        'HOST': os.environ.get('SUPABASE_DB_HOST'),
+        'PORT': os.environ.get('SUPABASE_DB_PORT', '5432'),
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -144,7 +159,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# Cross-origin settings for GitHub Pages frontend and Odoo
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    'https://nirsoftware.github.io',
+    'https://avex-production-10c1.up.railway.app',
+]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://nirsoftware.github.io',
+    'https://avex-production-10c1.up.railway.app',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

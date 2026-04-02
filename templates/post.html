@@ -207,8 +207,8 @@
 <header>
     <a href="/" class="logo"><i class="fas fa-graduation-cap"></i> AVEX</a>
     <div class="header-actions">
-        <a href="/login"  class="btn-join btn-login"><i class="fas fa-sign-in-alt"></i> Log in</a>
-        <a href="/signup" class="btn-join btn-signup"><i class="fas fa-user-plus"></i> Join</a>
+        <a href="login.html"  class="btn-join btn-login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+        <a href="signup.html" class="btn-join btn-signup"><i class="fas fa-user-plus"></i> Join</a>
     </div>
 </header>
 
@@ -224,8 +224,8 @@
         <h3><i class="fas fa-graduation-cap" style="color:#1e3c72;"></i> Join Avex Maria Alumni Network</h3>
         <p>Connect with thousands of alumni, share your journey, and stay updated.</p>
         <div class="cta-btns">
-            <a href="/signup" class="cta-btn cta-primary"><i class="fas fa-user-plus"></i> Create account</a>
-            <a href="/login"  class="cta-btn cta-secondary"><i class="fas fa-sign-in-alt"></i> Log in</a>
+            <a href="signup.html" class="cta-btn cta-primary"><i class="fas fa-user-plus"></i> Create account</a>
+            <a href="login.html"  class="cta-btn cta-secondary"><i class="fas fa-sign-in-alt"></i> Log in</a>
         </div>
     </div>
 </div>
@@ -233,7 +233,8 @@
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
 
 <script>
-    const API_BASE = '/api';
+    const API_BASE = 'https://avex-production-10c1.up.railway.app/api';
+    const WS_HOST = 'wss://avex-production-10c1.up.railway.app';
 
     function getPostId() {
         // Works for both /post/4/ (Django) and ?id=4 (fallback)
